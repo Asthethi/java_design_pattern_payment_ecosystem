@@ -21,16 +21,16 @@ public class Transaction implements Runnable {
     public void run() {
         TransactionIdGenerator transactionIdGenerator = TransactionIdGenerator.getInstance();
         long transactionId = transactionIdGenerator.getNextTransactionId();
-        System.out.println("Initiating Transaction " + this.data.getName() + " with transaction-id " + transactionId);
         Payment payment = PaymentFactory.getPaymentMethod(this.data.getPaymentMethodsType());
         PaymentContext paymentContext = new PaymentContext();
-        System.out.println("[" +this.data.getName()+"]" + " Setting payment method to "+this.data.getPaymentMethodsType());
+        System.out.println("[" +this.data.getName()+" | Trx id :"+transactionId+" ]" + " Setting payment method to "+this.data.getPaymentMethodsType());
         paymentContext.setPaymentMethod(payment);
-        System.out.println("[" +this.data.getName()+"]" + " Applying strategy");
+        System.out.println("[" +this.data.getName()+" | Trx id :"+transactionId+" ]" + " Applying strategy");
         paymentContext.setPaymentStrategy(this.data.getPaymentMethodsType() == PaymentMethods.CREDIT ? new CreditCardDiscountStrategy()
                 : new DebitCardDiscountStrategy());
-        System.out.println("[" +this.data.getName()+"]" + " Finalizing Transaction");
-        paymentContext.processPayment(this.data.getAmount());
+        System.out.println("[" +this.data.getName()+" | Trx id :"+transactionId+" ]" + " Finalizing Transaction");
+        paymentContext.setTransactionData(this.data);
+        paymentContext.processTransaction();
 
         try {
             Thread.sleep(1000);
