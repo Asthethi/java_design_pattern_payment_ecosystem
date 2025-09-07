@@ -24,4 +24,41 @@ public class TransactionData {
         this.amount = amount;
         this.paymentMethodsType = paymentMethodsType;
     }
+
+    public TransactionData(Builder builder) {
+        this.name = builder.name;
+        this.amount = builder.amount;
+        this.paymentMethodsType = builder.paymentMethodsType;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String name;
+        private double amount;
+        private PaymentMethods paymentMethodsType;
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder amount(double amount) {
+            this.amount = amount;
+            return this;
+        }
+
+        public Builder paymentMethods(PaymentMethods paymentMethodsType) {
+            this.paymentMethodsType = paymentMethodsType;
+            return this;
+        }
+
+        public TransactionData build() {
+            return new TransactionData(this);
+        }
+
+    }
+
 }
